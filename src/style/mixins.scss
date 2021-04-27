@@ -1,0 +1,200 @@
+@mixin border-radius($size) {
+  -moz-border-radius: $size;
+  -webkit-border-radius: $size;
+  border-radius: $size;
+}
+
+@mixin border-bottom-left-radius($size) {
+  border-bottom-left-radius: $size;
+  -webkit-border-bottom-left-radius: $size;
+  -moz-border-radius-bottomleft: $size;
+}
+
+@mixin border-bottom-right-radius($size) {
+  border-bottom-right-radius: $size;
+  -webkit-border-bottom-right-radius: $size;
+  -moz-border-radius-bottomright: $size;
+}
+
+@mixin border-top-left-radius($size) {
+  border-top-left-radius: $size;
+  -webkit-border-top-left-radius: $size;
+  -moz-border-radius-topleft: $size;
+}
+
+@mixin border-top-right-radius($size) {
+  border-top-right-radius: $size;
+  -webkit-border-top-right-radius: $size;
+  -moz-border-radius-topright: $size;
+}
+
+@mixin transition($content) {
+  transition: $content;
+  -webkit-transition: $content;
+  -moz-transition: $content;
+}
+
+@mixin transform($content) {
+  transform: $content;
+  -webkit-transform: $content;
+  -moz-transform: $content;
+}
+
+@mixin linear-gradient-top-to-bottom($side-or-corner, $from, $to) {
+  background: $from;
+  background: -moz-linear-gradient(top, $from, $to);
+  background: -webkit-gradient(linear, left top, left bottom, from($from), to($to));
+  background: -o-linear-gradient(top, $from, $to);
+  background: linear-gradient(to bottom, $from, $to);
+}
+
+@mixin linear-gradient-left-to-right($side-or-corner, $from, $to) {
+  background: $from;
+  background: -moz-linear-gradient(left, $from, $to);
+  background: -webkit-gradient(linear, left top, right bottom, from($from), to($to));
+  background: -o-linear-gradient(left, $from, $to);
+  background: linear-gradient(to right, $from, $to);
+}
+
+@mixin position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  @include transform(translate(-50%, -50%));
+}
+
+@mixin position-middle {
+  position: absolute;
+  top: 50%;
+  @include transform(translate(0, -50%));
+}
+
+@mixin gridRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+@mixin gridCol {
+  overflow: hidden;
+  -ms-flex-preferred-size: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  max-width: 100%;
+}
+
+@mixin space($size) {
+  padding: $size;
+  &.ignore-left {
+    padding-left: 0;
+  }
+  &.ignore-right {
+    padding-right: 0;
+  }
+  &.ignore-top {
+    padding-top: 0;
+  }
+  &.ignore-bottom {
+    padding-bottom: 0;
+  }
+  &.only-top {
+    padding: $size 0 0 0;
+  }
+  &.only-right {
+    padding: 0 $size 0 0;
+  }
+  &.only-bottom {
+    padding: 0 0 $size 0;
+  }
+  &.only-left {
+    padding: 0 0 0 $size;
+  }
+}
+
+@mixin margin-space($size) {
+  margin: $size;
+  &.ignore-left {
+    margin-left: 0;
+  }
+  &.ignore-right {
+    margin-right: 0;
+  }
+  &.ignore-top {
+    margin-top: 0;
+  }
+  &.ignore-bottom {
+    margin-bottom: 0;
+  }
+  &.only-top {
+    margin: $size 0 0 0;
+  }
+  &.only-right {
+    margin: 0 $size 0 0;
+  }
+  &.only-bottom {
+    margin: 0 0 $size 0;
+  }
+  &.only-left {
+    margin: 0 0 0 $size;
+  }
+}
+
+@mixin flex {
+  display: -webkit-box; /* Chrome 4+, Safari 3.1, iOS Safari 3.2+ */
+  display: -moz-box; /* Firefox 17- */
+  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
+  display: -ms-flexbox; /* IE 10 */
+  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
+}
+
+@mixin ripple {
+
+  position: relative;
+  overflow: hidden;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #666 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.75s ease-out, opacity 0.75s ease-out;
+  }
+
+  &:active:after {
+    transform: scale(0, 0);
+    opacity: .3;
+    transition: 0s;
+  }
+
+}
+
+@mixin clear-style {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: none;
+  padding: 0;
+  margin: 0;
+}
+
+@mixin text-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

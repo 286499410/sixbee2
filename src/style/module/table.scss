@@ -1,0 +1,283 @@
+.table-container {
+  background-color: #fff;
+  @include flex;
+  flex-direction: column;
+  overflow: hidden;
+  &.bordered {
+    border: 1px solid $table-border-color;
+    .table-header, .table-body, .table-footer {
+      margin: -1px;
+    }
+  }
+
+  &.none-outside-border {
+    border: none;
+    .table-header, .table-body, .table-footer {
+      margin: 0px;
+    }
+  }
+
+  .table-header {
+    position: relative;
+    z-index: 1;
+    background-color: $table-header-bg;
+    overflow: hidden;
+  }
+  .table-body {
+    flex-grow: 1;
+    position: relative;
+    z-index: 2;
+    background-color: #fcfdff;
+  }
+  .table-pager.bordered {
+    position: relative;
+    border: 1px solid $table-border-color;
+    margin-top: -1px;
+    padding: 6px;
+    line-height: 1;
+  }
+  .table-footer {
+    z-index: 1;
+    //box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.1);
+    background-color: $table-footer-bg;
+    .bordered {
+      td {
+        border: 1px solid $table-footer-border-color;
+      }
+    }
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  line-height: 1.5;
+  min-width: 100%;
+  width: 100%;
+  table-layout: fixed;
+
+  &.striped {
+    tr:nth-of-type(2n + 1) {
+      background-color: $table-stripe-color;
+    }
+  }
+
+  &.multi-line {
+    td {
+      white-space: normal;
+    }
+  }
+  tr {
+    @include transition(opacity .3s ease-in-out);
+  }
+  th {
+    font-weight: 500;
+    text-align: left;
+  }
+  &.bordered {
+    th {
+      border: 1px solid $table-header-border-color;
+    }
+    td {
+      border: 1px solid $table-border-color;
+    }
+  }
+
+  th, td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    padding-left: 6px;
+    padding-right: 6px;
+    height: 32px;
+    line-height: 1.4;
+    &.extra {
+      padding: 0;
+    }
+    &.control {
+      @include flex;
+      align-items: center;
+      border-color: $color-primary;
+      background-color: #fff;
+      .form-control {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
+
+
+
+  @for $i from 6 through 12 {
+    &[row-height='#{$i*4}'] {
+      td {
+        height: $i*4px;
+        padding-left: $i / 4 * 3px;
+        padding-right: $i / 4 * 3px;
+        &.control {
+          .form-control {
+
+          }
+        }
+      }
+    }
+  }
+
+  td {
+    &.td-checkbox {
+      text-align: center;
+    }
+    &.icons-event-td {
+      position: relative;
+      .icons-event {
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        right: 5px;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        @include transition((opacity .3s ease-in-out, color .3s ease-in-out));
+        & > div {
+          i {
+            font-size: 18px;
+          }
+          padding: 4px;
+          &:hover {
+            color: #1890ff;
+          }
+        }
+      }
+    }
+  }
+
+  tr.rowHover:hover {
+    .icons-event-td {
+      .icons-event {
+        opacity: 1;
+      }
+    }
+  }
+  tr.columnHover {
+    .icons-event-td:hover {
+      .icons-event {
+        opacity: 1;
+      }
+    }
+  }
+
+  &.condensed {
+    th, td {
+      padding: 4px;
+    }
+  }
+
+  &.small {
+    font-size: 12px;
+    th, td {
+      padding: 4px 6px;
+      height: 26px;
+    }
+    .th-checkbox, .td-checkbox {
+      font-size: 18px;
+    }
+  }
+
+  &.large {
+    font-size: 16px;
+    th, td {
+      padding: 12px;
+      height: 48px;
+    }
+    .th-checkbox, .td-checkbox {
+      font-size: 22px;
+      .checkbox {
+        padding: 8px;
+      }
+    }
+  }
+
+  &.control {
+    td {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+
+  .resize {
+    cursor: col-resize;
+    position: absolute;
+    width: 5px;
+    right: -3px;
+    top: 0;
+    height: 100%;
+    z-index: 1;
+  }
+
+  tbody {
+    tr {
+      &:hover {
+        background-color: $table-hover-color !important;
+      }
+      &.selected {
+        background-color: $table-selected-color !important;
+      }
+    }
+  }
+
+  .th-checkbox, .td-checkbox {
+    padding: 0;
+    font-size: 20px;
+    text-align: center;
+  }
+
+}
+
+.checkbox {
+  @include clear-style;
+  font-family: iconfont;
+  font-size: inherit;
+  margin: 0;
+
+  @include transition((color .3s ease-in-out));
+  color: #aaa;
+  cursor: pointer;
+  &:hover {
+    color: #1890ff;
+  }
+  &:before {
+    content: "\e7c7";
+  }
+  &:checked, &.checked {
+    &:before {
+      color: #1890ff;
+      content: "\e90f";
+    }
+  }
+}
+
+.filter-control {
+  position: fixed;
+  z-index: 1001;
+  display: none;
+  .checkbox {
+    font-size: 20px;
+  }
+}
+
+.table-border-left {
+  border-left: 1px solid $table-border-color;
+}
+
+.table-border-right {
+  border-right: 1px solid $table-border-color;
+}
+
+.table-border-top {
+  border-top: 1px solid $table-border-color;
+}
+
+.table-border-bottom {
+  border-bottom: 1px solid $table-border-color;
+}

@@ -1,0 +1,11 @@
+node_modules
+.idea
+*-compiled.js
+*.map
+npm-debug*
+*.bak.*
+.cache-loader
+test
+test/*
+yarn*
+dist

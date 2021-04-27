@@ -1,0 +1,45 @@
+{
+  "name": "sixbee-material-ui",
+  "version": "1.0.62",
+  "description": "model & view",
+  "author": "joey",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "babel -d dist/ src/ -w",
+    "build": "babel -d dist/ src/",
+    "prepublish": "npm run build",
+    "pub": "npm publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/286499410/sixbee-meterial-ui.git"
+  },
+  "devDependencies": {
+    "@babel/runtime": "^7.3.1",
+    "assert": "^1.4.1",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "lodash": "^4.17.11",
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "react-date-range": "^1.0.3",
+    "overlayscrollbars": "^1.13.1",
+    "overlayscrollbars-react": "^0.2.2",
+    "crypto-js": "^4.0.0",
+    "chart.js": "^2.9.4",
+    "jquery-param": "^1.1.2"
+  },
+  "peerDependencies": {
+    "lodash": ">=4.17.0",
+    "react": ">=16",
+    "react-dom": ">=16"
+  }
+}

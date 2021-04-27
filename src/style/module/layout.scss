@@ -1,0 +1,331 @@
+@import "../mixins";
+//@import "../bootstrap";
+
+.layout {
+  @include flex;
+
+  &.direction-row {
+    width: 100%;
+    flex-direction: row;
+  }
+
+  &.direction-column {
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .header {
+    width: 100%;
+    background-color: $layout-header-bg;
+    border: 1px solid $layout-header-border;
+    height: 48px;
+  }
+
+  .sidebar {
+    position: relative;
+    border-right: 1px solid $layout-sidebar-border;
+    background-color: $layout-sidebar-bg;
+  }
+
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .footer {
+    width: 100%;
+    .fixed {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+}
+
+.flex {
+  @include flex;
+  &.center {
+    justify-content: center;
+  }
+  &.between {
+    justify-content: space-between;
+  }
+  &.start {
+    justify-content: flex-start;
+  }
+  &.end {
+    justify-content: flex-end;
+  }
+  &.around {
+    justify-content: space-around;
+  }
+  &.middle {
+    align-items: center;
+  }
+  &.inline {
+    display: inline-flex;
+  }
+  &.warp {
+    flex-wrap: wrap;
+  }
+  .grow {
+    flex-grow: 1;
+  }
+}
+
+.row, .row-space {
+  @include gridRow();
+  & > .col-full {
+    flex-basis: 100%
+  }
+
+}
+
+.col {
+  @include gridCol();
+}
+
+.row-space {
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  & > .col {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  &.small {
+    width: calc(100% + 12px);
+    margin-left: -6px;
+    & > .col {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+  }
+  &.large {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+    & > .col {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+}
+
+@for $i from 1 through 24 {
+  .row[cols='#{$i}'], .row-space[cols='#{$i}'] {
+    & > .col {
+      flex-basis: 100% / $i;
+    }
+    & > .col-full {
+      flex-basis: 100%
+    }
+    @for $j from 1 through $i {
+      & > .col-#{$j} {
+        flex-basis: 100% / $i * $j;
+      }
+    }
+  }
+}
+
+@for $i from 1 through 12 {
+  .row[spacex='#{$i * 4}'] {
+    width: calc(100% + #{$i * 4}px);
+    margin-left: - $i * 2px;
+    margin-right: -$i * 2px;
+    & > .col {
+      padding-left: $i * 2px;
+      padding-right: $i * 2px;
+    }
+  }
+  .row[spacey='#{$i * 4}'] {
+    margin-top: -$i * 2px;
+    margin-bottom: -$i * 2px;
+    & > .col {
+      padding-top: $i * 2px;
+      padding-bottom: $i * 2px;
+    }
+  }
+  .row[space='#{$i * 4}'] {
+    width: calc(100% + #{$i * 4}px);
+    margin: - $i * 2px;
+    & > .col {
+      padding: $i * 2px;
+    }
+  }
+}
+
+.space-x-small {
+  @include space(4px);
+}
+
+.space-small {
+  @include space(8px);
+}
+
+.space {
+  @include space(12px);
+}
+
+.space-medium {
+  @include space(16px);
+}
+
+.space-large {
+  @include space(20px);
+}
+
+.margin-space-x-small {
+  @include margin-space(4px);
+}
+
+.margin-space-small {
+  @include margin-space(8px);
+}
+
+.margin-space {
+  @include margin-space(12px);
+}
+
+.margin-space-large {
+  @include margin-space(20px);
+}
+
+.relative {
+  position: relative;
+}
+
+.full-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.full-screen-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.position-center {
+  @include position-center;
+  background-color: transparent;
+}
+
+.position-middle {
+  @include position-middle;
+  background-color: transparent;
+}
+
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
+.windows {
+  font-size: 12px;
+  min-height: 32px;
+  height: 32px;
+  line-height: 32px;
+  background: #fff;
+  border-bottom: 1px solid $windows-border;
+  border-left: 1px solid $windows-border;
+  margin-left: -1px;
+  position: relative;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow: hidden;
+  width: 100%;
+  .window-content {
+    @include flex;
+    position: absolute;
+    left: 20px;
+  }
+  .window-tab {
+    border-right: 1px solid $windows-border;
+    position: relative;
+    &:hover {
+      background-color: #f5f5f5;
+    }
+    &.active, &.active:hover {
+      background: $windows-active-bg;
+    }
+    .label {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      padding-left: 12px;
+      padding-right: 32px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      width: calc(100% - 20px);
+    }
+    .window-close {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      line-height: 16px;
+      text-align: center;
+      color: #222;
+      font-weight: bold;
+      z-index: 1;
+      position: absolute;
+      right: 4px;
+      border-radius: 100%;
+    }
+  }
+  .left-arrow {
+    color: $color-muted;
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    border-right: 1px solid $windows-border;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+  .right-arrow {
+    color: $color-muted;
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    border-left: 1px solid $windows-border;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}

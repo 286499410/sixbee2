@@ -1,0 +1,77 @@
+@import "../mixins";
+
+.text-primary {
+  color: $color-primary
+}
+
+.text-secondary {
+  color: $color-secondary
+}
+
+.text-muted {
+  color: $color-muted;
+}
+
+.text-info {
+  color: $color-info;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-error {
+  color: $color-error;
+}
+
+.text-success {
+  color: $color-success
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-bolder {
+  font-weight: bolder;
+}
+
+.text-small {
+  font-size: 12px;
+}
+
+.text-default {
+  font-size: 14px;
+}
+
+.text-large {
+  font-size: 16px;
+}
+
+.text-larger {
+  font-size: 18px;
+}
+
+.text-vast {
+  font-size: 20px;
+}
+
+.text-vaster {
+  font-size: 26px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-ellipsis {
+  @include text-ellipsis;
+}
