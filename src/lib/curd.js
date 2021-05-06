@@ -16,9 +16,6 @@ export default class Curd {
         read: {
             method: GET
         },
-        single: {
-            method: GET
-        },
         update: {
             method: PUT
         },
@@ -30,14 +27,20 @@ export default class Curd {
         }
     };
 
+    cache = {
+        read: {},
+        list: {},
+        all: undefined
+    };
+
     state = {
         headers: {},
-        request: undefined
+        request: undefined,
     };
 
     constructor(key) {
         this.uri = '/' + key.replace('.', '/');
-        Object.keys(this.api).map((key) => {
+        Object.keys(this.api).forEach((key) => {
             this.api[key].uri = this.uri;
         });
     }
@@ -80,28 +83,20 @@ export default class Curd {
         }
     }
 
-    async read(id, params) {
+    async read(id, params, cache = true) {
         const request = this.getRequest();
         const url = this.api.read.uri + '/' + id;
         const data = params;
         const header = {...request.getHeader(), ...this.getHeader()};
+        const cacheKey = "read." + id;
+        const cacheData = _.get(this.cache, cacheKey);
+        if(cache && cacheData) {
+            return cacheData;
+        }
         try {
             const res = await request[this.api.read.method]({url, data, header});
             const json = await res.json();
-            return json;
-        } catch (e) {
-            return Promise.reject(e);
-        }
-    }
-
-    async single(params) {
-        const request = this.getRequest();
-        const url = this.api.single.uri;
-        const data = params;
-        const header = {...request.getHeader(), ...this.getHeader()};
-        try {
-            const res = await request[this.api.single.method]({url, data, header});
-            const json = await res.json();
+            _.set(this.cache, cacheKey, json);
             return json;
         } catch (e) {
             return Promise.reject(e);
@@ -115,6 +110,7 @@ export default class Curd {
         try {
             const res = await request[this.api.update.method]({url, data, header});
             const json = await res.json();
+            this.clearCache("read." + id);
             return json;
         } catch (e) {
             return Promise.reject(e);
@@ -131,25 +127,67 @@ export default class Curd {
         try {
             const res = await request[this.api.delete.method]({url, header});
             const json = await res.json();
+            ids.split(",").forEach(id => {
+                this.clearCache( "read." +  id);
+            });
             return json;
         } catch (e) {
             return Promise.reject(e);
         }
     }
 
-    async list(params) {
+    async list(params, cache = true) {
         const request = this.getRequest();
         const url = this.api.list.uri;
         const data = params;
         const header = {...request.getHeader(), ...this.getHeader()};
+        const cacheKey = "list";
+        const cacheData = this.getCache(cacheKey) || {};
+        if(cache && cacheData[JSON.stringify(data)]) {
+            return cacheData[JSON.stringify(data)];
+        }
         try {
             const res = await request[this.api.list.method]({url, data, header});
             const json = await res.json();
+            cacheData[JSON.stringify(data)] = json;
+            this.setCache(cacheKey, cacheData);
             return json;
         } catch (e) {
             return Promise.reject(e);
         }
     }
 
+    async getAll(params, cache = true) {
+        const limit = 50000;
+        const request = this.getRequest();
+        const url = this.api.list.uri;
+        const data = {limit, ...params};
+        const header = {...request.getHeader(), ...this.getHeader()};
+        const cacheKey = "all";
+        const cacheData = this.getCache(cacheKey);
+        if(cache && cacheData) {
+            return cacheData;
+        }
+        try {
+            const res = await request[this.api.list.method]({url, data, header});
+            const json = await res.json();
+            this.setCache(cacheKey, json);
+            return json;
+        } catch (e) {
+            return Promise.reject(e);
+        }
+    }
+
+    setCache(key, data) {
+        _.set(this.cache, key, data);
+    }
+
+    getCache(key) {
+        return _.get(this.cache, key);
+    }
+
+    clearCache(key) {
+        this.setCache(key, undefined);
+    }
 }
 

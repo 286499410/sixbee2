@@ -60,7 +60,7 @@ class Connect extends Component {
 
     updateData() {
         let data = _.cloneDeep(this.props.mapToProps.data(this.props, this.state.models) || {});
-        if (!_.isEqual(data, this.state.data)) {
+        if (!Page.isEqual(data, this.state.data)) {
             this.setState({data});
         }
     }

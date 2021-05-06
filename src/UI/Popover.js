@@ -126,7 +126,7 @@ class PopoverContent extends Component {
         }, 300);
     };
 
-    handleRequestClose = (event) => {console.log(this);
+    handleRequestClose = (event) => {
         event.stopPropagation();
         call(this.props.onRequestClose, event);
     };

@@ -27,7 +27,7 @@ export default class Request {
     };
 
     state = {
-        fetch: {}
+        fetch: {},
     };
 
     constructor(config = {}) {
@@ -124,7 +124,8 @@ export default class Request {
     get({url, data = {}, headers = this.config.headers, dataType = this.config.dataType}) {
         const method = "GET";
         url = this.getRequestUrl(url);
-        return this.fetch({url, data, method, headers, dataType});
+        const promise = this.fetch({url, data, method, headers, dataType});
+        return promise;
     }
 
     /**

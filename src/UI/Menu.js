@@ -205,7 +205,7 @@ export default class Menu extends Component {
         if(this.props.multiple) {
             return (this.props.value || []).indexOf(value) >= 0;
         } else {
-            this.props.value === value;
+            return this.props.value === value;
         }
     }
 
@@ -219,7 +219,10 @@ export default class Menu extends Component {
             const isSelected = this.hasValue(value);
             menuItems.push(<div
                 className={joinBlankSpace("menu-item flex middle between", isSelected && 'selected', data.disabled && 'menu-item-disabled')}
-                style={{height: hasChildren ? 'auto' : undefined}}
+                style={{
+                    ...this.props.menuItemStyle,
+                    height: hasChildren ? 'auto' : undefined
+                }}
                 key={key}
                 onClick={hasChildren && this.props.clickParentShowChildren ? this.showChildren(data) : this.handleClick(data)}>
                 <div className="menu-item-label flex middle">

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 
 export default class ChartDoughnut extends Component {
 
@@ -13,11 +13,9 @@ export default class ChartDoughnut extends Component {
     }
 
     componentDidMount() {
-        this.Chart = new Chart(this.refs.chart.getContext("2d"), {
-            type: "doughnut",
-            data: this.props.data,
-            options: this.props.options
-        });
+        const ctx = this.refs.chart.getContext("2d");
+        const {data, options, type = "doughnut"} = this.props;
+        this.Chart = new Chart(ctx, {type, data, options});
     }
 
     getChart() {

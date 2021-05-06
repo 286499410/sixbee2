@@ -80,9 +80,9 @@ export default class DatePicker extends Component {
                         </div> : <div className="text-ellipsis">{date}</div>
                     }
                     {
-                        isEmpty(date) ? <div className="text-muted">
+                        isEmpty(date) ? <div  className="control-border-color">
                             <div><Icon name="calendar"/></div>
-                        </div> : <div className="text-muted">
+                        </div> : <div  className="control-border-color">
                             <div className="hover-show"><Icon name="close-circle-fill" onClick={this.handleClear}/></div>
                             <div className="hover-hide"><Icon name="calendar"/></div>
                         </div>

@@ -1,6 +1,6 @@
 {
-  "name": "sixbee-material-ui",
-  "version": "1.0.62",
+  "name": "sixbee2",
+  "version": "1.0.0",
   "description": "model & view",
   "author": "joey",
   "license": "ISC",
@@ -29,13 +29,13 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
+    "chart.js": "3.2.0",
+    "crypto-js": "^4.0.0",
     "jquery": "^3.5.1",
-    "react-date-range": "^1.0.3",
+    "jquery-param": "^1.1.2",
     "overlayscrollbars": "^1.13.1",
     "overlayscrollbars-react": "^0.2.2",
-    "crypto-js": "^4.0.0",
-    "chart.js": "^2.9.4",
-    "jquery-param": "^1.1.2"
+    "react-date-range": "^1.0.3"
   },
   "peerDependencies": {
     "lodash": ">=4.17.0",

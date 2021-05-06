@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 
 export default class ChartBar extends Component {
 
@@ -13,11 +13,9 @@ export default class ChartBar extends Component {
     }
 
     componentDidMount() {
-        this.Chart = new Chart(this.refs.chart.getContext("2d"), {
-            type: "bar",
-            data: this.props.data,
-            options: this.props.options
-        });
+        const ctx = this.refs.chart.getContext("2d");
+        const {data, options, type = "bar"} = this.props;
+        this.Chart = new Chart(ctx, {type, data, options});
     }
 
     getChart() {

@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Text from './Text';
 import Select from './Select';
-import {joinBlankSpace} from "../lib/tool";
+import {call, joinBlankSpace} from "../lib/tool";
 import Auto from "./Auto";
 import DatePicker from "./DatePicker";
 import DateRange from "./DateRange";
 import Checkbox from './Checkbox';
 import Radio from "./Radio";
+import Number from "./Number";
 
 export default class Control extends Component {
 
@@ -30,7 +31,8 @@ export default class Control extends Component {
         date: DatePicker,
         dateRange: DateRange,
         radio: Radio,
-        select: Select
+        select: Select,
+        number: Number
     };
 
     state = {
@@ -84,7 +86,7 @@ export default class Control extends Component {
      * @param value
      */
     setValue(value) {
-        this.handleChange({target: {value: value}});
+        this.handleChange({value});
     }
 
     /**
@@ -103,9 +105,7 @@ export default class Control extends Component {
     handleChange = ({value}) => {
         let changeFormData = true;
         const control = this, key = this.props.name, form = this.context.Form;
-        if (this.props.onChange) {
-            changeFormData = this.props.onChange({value, control, form});
-        }
+        call(this.props.onChange, {value, control, form});
         if (this.context.Form && changeFormData !== false) {
             if (this.props.type === 'dateRange' && this.props.startKey && this.props.endKey) {
                 value = {[this.props.startKey]: value[0], [this.props.endKey]: value[1]};

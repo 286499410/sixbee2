@@ -11,7 +11,7 @@ export default class Nav extends Component {
 
     static defaultProps = {
         parentKey: 'parent_id',
-        mode: 'vertical',
+        mode: 'vertical-pop',
         onClick: undefined,
         selectedKey: undefined,
         iconPrefix: 'iconfont icon-'

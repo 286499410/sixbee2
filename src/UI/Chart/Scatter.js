@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 
 export default class ChartScatter extends Component {
 
@@ -13,11 +13,9 @@ export default class ChartScatter extends Component {
     }
 
     componentDidMount() {
-        this.Chart = new Chart(this.refs.chart.getContext("2d"), {
-            type: "scatter",
-            data: this.props.data,
-            options: this.props.options
-        });
+        const ctx = this.refs.chart.getContext("2d");
+        const {data, options, type = "scatter"} = this.props;
+        this.Chart = new Chart(ctx, {type, data, options});
     }
 
     getChart() {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {call, getMousePosition, isEmpty, joinBlankSpace, renderContent} from "../../lib/tool";
+import {call, getMousePosition, joinBlankSpace, renderContent} from "../../lib/tool";
 import Scrollbar from "../Scrollbar";
 import BodyColWidth from "./BodyColWidth";
 import $ from "jquery";
@@ -28,7 +28,7 @@ export default class TableBody extends Component {
         const {dataSource = [], bodyRowHeight, isContentEditable} = props;
         const {dataColumns} = Table.getColumns();
         let style = {};
-        return <table
+        return dataSource.length > 0 ? <table
             className={joinBlankSpace("table", props.bordered && "bordered", props.condensed && "condensed", props.striped && "striped")}
             style={style}
             row-height={bodyRowHeight}
@@ -40,6 +40,8 @@ export default class TableBody extends Component {
                     {dataColumns.map((column, col) => {
                         return <TdContent
                             key={col}
+                            row={row}
+                            col={col}
                             data={data}
                             column={column}
                             onDidMount={(ref) => {
@@ -50,7 +52,14 @@ export default class TableBody extends Component {
                 </tr>
             })}
             </tbody>
-        </table>
+        </table> : <div style={{height: 1}}>
+            <div className="position-center text-center" style={{zIndex: 1}}>
+                <div>
+                    <div><img src={"/image/nodata.png"} style={{maxWidth: 200}}/></div>
+                    <div>没有找到相关数据</div>
+                </div>
+            </div>
+        </div>
     }
 
     getContentRef({row, col}) {
@@ -91,13 +100,12 @@ export default class TableBody extends Component {
         return (
             <div ref="container" className={joinBlankSpace("table-body", this.props.className)}
                  onClick={props.isContentEditable ? this.handleClick : undefined}>
-                {props.bodyHeight ?
-                    <Scrollbar ref="scroll" style={{height: props.bodyHeight, width: "100%"}}
-                               onScroll={this.handleScroll}>
-                        <div style={{width: tableWidth, minWidth: "calc(100% - 1px)"}}>
-                            {this.renderBody()}
-                        </div>
-                    </Scrollbar> : this.renderBody()}
+                <Scrollbar ref="scroll" style={{height: props.bodyHeight || "auto", width: "100%"}}
+                           onScroll={this.handleScroll}>
+                    <div style={{width: tableWidth, minWidth: "calc(100% - 1px)"}}>
+                        {this.renderBody()}
+                    </div>
+                </Scrollbar>
             </div>
         );
     }
@@ -116,7 +124,8 @@ export class TdContent extends Component {
     };
 
     state = {
-        isEditable: false
+        isEditable: false,
+        value: undefined
     };
 
     static align = {
@@ -133,9 +142,9 @@ export class TdContent extends Component {
         call(this.props.onDidMount, this);
     }
 
-    getValue() {
+    getControlValue() {
         const {column} = this.props;
-        return _.get(this.props.data, column.formKey || column.key);
+        return this.state.value === undefined ? _.get(this.props.data, column.formKey || column.key) : this.state.value;
     }
 
     focus() {
@@ -157,7 +166,17 @@ export class TdContent extends Component {
     }
 
     handleBlur = (event) => {
-        this.setState({isEditable: false});
+        const {column, row, col, data} = this.props;
+        this.setState({isEditable: false}, () => {
+            call(column.onBlur, {value: this.state.value, row, col, data});
+        });
+    };
+
+    handleChange = ({value}) => {
+        const {column, row, col, data} = this.props;
+        this.setState({value}, () => {
+            call(column.onChange, {value, row, col, data});
+        });
     };
 
     getAlign() {
@@ -165,8 +184,9 @@ export class TdContent extends Component {
     }
 
     render() {
-        const value = this.getValue();
+
         if (this.state.isEditable) {
+            const value = this.getControlValue();
             return <td align={this.props.column.align} className="control">
                 <Control
                     className="border-none full-width"
@@ -175,6 +195,8 @@ export class TdContent extends Component {
                     label={false}
                     value={value}
                     onBlur={this.handleBlur}
+                    onChange={this.handleChange}
+                    align={this.getAlign()}
                 />
             </td>
         } else {

@@ -28,6 +28,11 @@
     position: relative;
     z-index: 2;
     background-color: #fcfdff;
+    tbody {
+      tr {
+        background-color: #fff;
+      }
+    }
   }
   .table-pager.bordered {
     position: relative;
